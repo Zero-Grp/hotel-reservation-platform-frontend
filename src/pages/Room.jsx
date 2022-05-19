@@ -14,9 +14,8 @@ const initialState = {
 
 export const Room = () => {
   const { id } = useParams();
-  console.log(id);
-  const { rooms } = useSelector((state) => state.room);
-  const [room, setRoom] = useState({});
+  const rooms = useSelector((state) => state.room);
+  const [room, setRoom] = useState(initialState);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -24,9 +23,10 @@ export const Room = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log(rooms.find((r) => r.id.toString() === id));
-    setRoom(rooms.find((r) => r.id.toString() === id));
-  }, [rooms]);
+    if (rooms.rooms.length > 0) {
+      setRoom(rooms.rooms.find((r) => r.id.toString() === id));
+    }
+  }, [rooms, room]);
   return (
     <div>
       <Header />
