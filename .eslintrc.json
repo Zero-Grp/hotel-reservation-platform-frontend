@@ -24,6 +24,12 @@
     "react/jsx-uses-react": ["off"],
     "react/react-in-jsx-scope": ["off"],
     "no-shadow": "off",
-    "no-console": "error"
+    "no-console": "off",
+    "import/extensions": "off",
+    "import/prefer-default-export": "off",
+    "react/function-component-definition": "off",
+    "jsx-a11y/label-has-associated-control": "off",
+    "react/prop-types": "off",
+    "no-param-reassign": "off"
   }
 }
