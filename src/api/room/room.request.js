@@ -11,7 +11,7 @@ const getRooms = () => {
     .then((response) => {
       return response;
     })
-    .catch(() => {
+    .catch((error) => {
       store.dispatch(logout());
     });
 };

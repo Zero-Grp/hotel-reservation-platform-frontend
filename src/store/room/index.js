@@ -45,7 +45,7 @@ export const roomSlice = createSlice({
     },
     // eslint-disable-next-line
     [addRoomStore.rejected]: (state, action) => {
-      // state.meetings = [];
+      // state.rooms = [];
     },
   },
 });

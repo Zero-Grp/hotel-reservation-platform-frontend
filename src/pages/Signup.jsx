@@ -28,6 +28,7 @@ export const Signup = () => {
       })
       .then((res) => {
         if (res === "User successfully saved") {
+          e.target.reset();
           toast.success("Registration Successful!");
         } else {
           toast.success("Registration failed!");
