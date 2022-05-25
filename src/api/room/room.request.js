@@ -1,26 +1,21 @@
-import axios from "axios";
-import userRequest from "../user/user.request";
+import apiInstance from "../apiInstance";
 import store from "../../store";
 import { logout } from "../../store/user";
 
 const getRooms = () => {
-  return axios
-    .get(`${process.env.REACT_APP_BASE_URL}/api/room/`, {
-      headers: userRequest.authHeader(),
-    })
+  return apiInstance
+    .get(`/api/room/`)
     .then((response) => {
       return response;
     })
-    .catch((error) => {
-      store.dispatch(logout());
+    .catch(() => {
+      // store.dispatch(logout());
     });
 };
 
 const addRoom = (room) => {
-  return axios
-    .post(`${process.env.REACT_APP_BASE_URL}/api/room/`, room, {
-      headers: userRequest.authHeader(),
-    })
+  return apiInstance
+    .post(`/api/room/`, room)
     .then((response) => {
       return response;
     })
@@ -28,10 +23,8 @@ const addRoom = (room) => {
 };
 
 const updateRoom = (room) => {
-  return axios
-    .patch(`${process.env.REACT_APP_BASE_URL}/api/room/`, room, {
-      headers: userRequest.authHeader(),
-    })
+  return apiInstance
+    .put(`/api/room/`, room)
     .then((response) => {
       return response;
     })
@@ -39,10 +32,8 @@ const updateRoom = (room) => {
 };
 
 const deleteRoom = (roomId) => {
-  return axios
-    .delete(`${process.env.REACT_APP_BASE_URL}/api/room/${roomId}`, {
-      headers: userRequest.authHeader(),
-    })
+  return apiInstance
+    .delete(`/api/room/${roomId}`)
     .then((response) => {
       return response;
     })
@@ -50,10 +41,8 @@ const deleteRoom = (roomId) => {
 };
 
 const getRoomById = (roomId) => {
-  return axios
-    .get(`${process.env.REACT_APP_BASE_URL}/api/room/${roomId}`, {
-      headers: userRequest.authHeader(),
-    })
+  return apiInstance
+    .get(`/api/room/${roomId}`)
     .then((response) => {
       return response;
     })

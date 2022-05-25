@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Card, Pagination, CTA } from "../components/index.js";
+import { Header, Card, CTA } from "../components/index.js";
 import { getRoomStore } from "../store/room";
 
 const initialState = [
@@ -37,7 +37,6 @@ export const Dashboard = () => {
             ))}
           </div>
         </div>
-        <Pagination />
       </div>
     </div>
   );

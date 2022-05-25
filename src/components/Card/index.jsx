@@ -18,7 +18,7 @@ export const Card = (props) => {
             </a>
           </h3>
         </div>
-        <p className="text-sm font-medium text-gray-900">{room.price}</p>
+        <p className="text-sm font-medium text-gray-900">USD {room.price}</p>
       </div>
     </div>
   );

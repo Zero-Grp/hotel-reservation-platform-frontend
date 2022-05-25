@@ -10,7 +10,7 @@ apiInstance.interceptors.request.use(
   function (config) {
     config.baseURL = url || "http://localhost:8080";
     config.headers = {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
     };
     return config;
   },

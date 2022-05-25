@@ -5,6 +5,7 @@
   "dependencies": {
     "@headlessui/react": "^1.6.1",
     "@heroicons/react": "^1.0.6",
+    "@paypal/react-paypal-js": "^7.8.0",
     "@reduxjs/toolkit": "^1.8.1",
     "@tailwindcss/aspect-ratio": "^0.4.0",
     "@tailwindcss/forms": "^0.5.1",
@@ -15,6 +16,7 @@
     "cross-env": "^7.0.3",
     "jest": "^27.5.1",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.3",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-redux": "^7.2.8",

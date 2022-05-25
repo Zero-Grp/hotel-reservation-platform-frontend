@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { Header } from "../components/index.js";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import moment from "moment";
+import { toast } from "react-toastify";
+import { Header, ButtonWrapper } from "../components/index.js";
 import { getRoomStore } from "../store/room";
+import reservationRequest from "../api/reservation/reservation.request.js";
 
 const initialState = {
   id: "",
@@ -12,11 +16,50 @@ const initialState = {
   imageURL: "",
 };
 
+const initialInput = {
+  startDate: "",
+  endDate: "",
+};
+
 export const Room = () => {
   const { id } = useParams();
   const rooms = useSelector((state) => state.room);
   const [room, setRoom] = useState(initialState);
+  const [inputs, setInputs] = useState(initialInput);
   const dispatch = useDispatch();
+
+  const reserve = () => {
+    const token = localStorage.getItem("token");
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace("-", "+").replace("_", "/");
+    const user = JSON.parse(window.atob(base64));
+    reservationRequest
+      .addReservation({
+        amount:
+          room.price *
+          moment(inputs.endDate).diff(moment(inputs.startDate), "days"),
+        startDate: inputs.startDate,
+        endDate: inputs.endDate,
+        status: "RESERVED",
+        customer: user.sub,
+        room: id,
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.data === "Reservation successfully saved") {
+          setInputs(initialInput);
+          toast.success("Reserve room success!");
+        } else {
+          toast.error("Something went wrong!");
+        }
+      });
+  };
+
+  const handleChange = (e) => {
+    const { value, name } = e.target;
+    setInputs((values) => ({ ...values, [name]: value }));
+    console.log(inputs);
+  };
 
   useEffect(() => {
     dispatch(getRoomStore());
@@ -66,7 +109,7 @@ export const Room = () => {
 
           {/* Image gallery */}
           <div className="mt-6 max-w-2xl mx-auto sm:px-6 lg:max-w-7xl lg:px-8">
-            <div className="hidden rounded-lg overflow-hidden lg:block">
+            <div className="rounded-lg overflow-hidden">
               <img
                 src={room.imageURL}
                 alt=""
@@ -86,7 +129,8 @@ export const Room = () => {
             {/* Options */}
             <div className="mt-4 lg:mt-0 lg:row-span-3">
               <h2 className="sr-only">Product information</h2>
-              <p className="text-3xl text-gray-900">{room.price}</p>
+              <p className="text-lg text-gray-600">Per day</p>
+              <p className="text-3xl text-gray-900">USD {room.price}</p>
 
               <form className="mt-10">
                 {/* Colors */}
@@ -95,8 +139,9 @@ export const Room = () => {
                     Start date
                     <input
                       type="date"
-                      name="start-date"
-                      id=""
+                      name="startDate"
+                      value={inputs.startDate}
+                      onChange={handleChange}
                       required
                       className="mt-2 w-full border border-gray-200 rounded-md py-3 px-4 flex items-center justify-center text-base font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     />
@@ -105,20 +150,48 @@ export const Room = () => {
                     End date
                     <input
                       type="date"
-                      name="end-date"
-                      id=""
+                      name="endDate"
+                      value={inputs.endDate}
+                      onChange={handleChange}
                       required
                       className="mt-2 w-full border border-gray-200 rounded-md py-3 px-4 flex items-center justify-center text-base font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     />
                   </label>
                 </div>
-
-                <button
-                  type="submit"
-                  className="mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                  Reserve
-                </button>
               </form>
+
+              {inputs.startDate !== "" && inputs.endDate !== "" && (
+                <>
+                  <p className="text-lg mt-8 text-gray-600">Total</p>
+                  <p className="text-3xl mb-4 text-gray-900">
+                    USD{" "}
+                    {room.price *
+                      moment(inputs.endDate).diff(
+                        moment(inputs.startDate),
+                        "days",
+                      )}
+                  </p>
+                </>
+              )}
+              {inputs.startDate !== "" && inputs.endDate !== "" && (
+                <PayPalScriptProvider
+                  options={{
+                    "client-id":
+                      "AbU6qfTm7_kc54vebXVwO3sXGzQiDP9Kx-5xMKd5ySesbTzcFG_LoCoab6rsaTfLANzxvEMSJewX7dB3",
+                  }}>
+                  <ButtonWrapper
+                    amount={
+                      room.price *
+                      moment(inputs.endDate).diff(
+                        moment(inputs.startDate),
+                        "days",
+                      )
+                    }
+                    showSpinner={false}
+                    reserve={reserve}
+                  />
+                </PayPalScriptProvider>
+              )}
             </div>
 
             <div className="py-10 lg:pt-6 lg:pb-16 lg:col-start-1 lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
