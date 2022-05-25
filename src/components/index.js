@@ -5,5 +5,15 @@ import { CTA } from "./CTA/index.jsx";
 import { Banner } from "./Banner/index.jsx";
 import { Model } from "./Model/index.jsx";
 import { ButtonWrapper } from "./Paypal/index.jsx";
+import { CreateForm } from "./CreateForm/index.jsx";
 
-export { Header, Card, Pagination, CTA, Banner, Model, ButtonWrapper };
+export {
+  Header,
+  Card,
+  Pagination,
+  CTA,
+  Banner,
+  Model,
+  CreateForm,
+  ButtonWrapper,
+};
